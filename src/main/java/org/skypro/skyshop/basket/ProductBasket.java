@@ -57,6 +57,17 @@ public class ProductBasket {
         return false;
     }
 
+    public Product findProductByTitle(String title) {
+        if (title == null) return null;
+        for (Product product : this.store) {
+            if (product == null) continue;
+            if (product.getTitle().equals(title)) {
+                return product;
+            }
+        }
+        return null;
+    }
+
     public void cleanBasket() {
         for (int i = 0; i < this.store.length; i++) {
             store[i] = null;
