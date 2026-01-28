@@ -23,7 +23,14 @@ public class ProductBasket {
     }
 
     public int getBasketAmountTotal(){
-        return 0;
+
+        int sum = 0;
+        for (Product product : this.store) {
+            if(product == null) continue;
+            sum += product.getPrice();
+        }
+
+        return sum;
     }
 
     public void printBasketItems(){
