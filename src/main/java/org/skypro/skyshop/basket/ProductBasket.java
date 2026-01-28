@@ -34,9 +34,15 @@ public class ProductBasket {
     }
 
     public void printBasketItems() {
+        int itemsCount = 0;
         for (Product product : this.store) {
             if (product == null) continue;
+            itemsCount++;
             System.out.print(product);
+        }
+        if (itemsCount < 1) {
+            System.out.println("В корзине пусто.");
+            return;
         }
         System.out.printf("Итого: %s%n", getBasketAmountTotal());
     }
