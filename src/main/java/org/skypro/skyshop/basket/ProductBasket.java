@@ -58,7 +58,9 @@ public class ProductBasket {
     }
 
     public void cleanBasket() {
-
+        for (int i = 0; i < this.store.length; i++) {
+            store[i] = null;
+        }
     }
 
 }
