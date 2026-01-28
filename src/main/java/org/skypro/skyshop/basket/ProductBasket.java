@@ -48,6 +48,12 @@ public class ProductBasket {
     }
 
     public boolean isProductExist(String title) {
+        for (Product product : this.store) {
+            if (product == null) continue;
+            if (product.getTitle().equals(title)) {
+                return true;
+            }
+        }
         return false;
     }
 
