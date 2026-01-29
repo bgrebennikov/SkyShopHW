@@ -13,4 +13,9 @@ public class SimpleProduct extends Product {
     public double getPrice() {
         return this.price;
     }
+
+    @Override
+    public boolean isSpecial() {
+        return false;
+    }
 }

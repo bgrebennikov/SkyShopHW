@@ -13,6 +13,8 @@ public abstract class Product {
 
     public abstract double getPrice();
 
+    public abstract boolean isSpecial();
+
     @Override
     public String toString() {
         return "%s: %s%n".formatted(title, getPrice());
