@@ -10,7 +10,7 @@ public class SimpleProduct extends Product {
     }
 
     @Override
-    public int getPrice() {
+    public double getPrice() {
         return this.price;
     }
 }

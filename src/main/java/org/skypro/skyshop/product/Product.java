@@ -11,7 +11,7 @@ public abstract class Product {
         return title;
     }
 
-    public abstract int getPrice();
+    public abstract double getPrice();
 
     @Override
     public String toString() {
