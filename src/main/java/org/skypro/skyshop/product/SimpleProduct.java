@@ -5,7 +5,7 @@ public class SimpleProduct extends Product {
     private final int price;
 
     public SimpleProduct(String title, int price) {
-        super(title, price);
+        super(title);
         this.price = price;
     }
 
