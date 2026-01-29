@@ -13,7 +13,12 @@ public class DiscountedProduct extends Product {
 
 
     @Override
-    public int getPrice() {
-        return this.price * (this.discountPercent / 100);
+    public double getPrice() {
+        return price - (price * ((double) discountPercent / 100));
+    }
+
+    @Override
+    public String toString() {
+        return "%s со скидкой: %s%n".formatted(this.getTitle(), this.getPrice());
     }
 }
