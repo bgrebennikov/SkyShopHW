@@ -22,9 +22,9 @@ public class ProductBasket {
         System.out.println("В корзине недостаточно места для добавления нового продукта");
     }
 
-    public int getBasketAmountTotal() {
+    public double getBasketAmountTotal() {
 
-        int sum = 0;
+        double sum = 0;
         for (Product product : this.store) {
             if (product == null) continue;
             sum += product.getPrice();
