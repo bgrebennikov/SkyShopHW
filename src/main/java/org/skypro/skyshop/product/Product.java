@@ -15,6 +15,6 @@ public abstract class Product {
 
     @Override
     public String toString() {
-        return "%s: %n".formatted(title);
+        return "%s: %s%n".formatted(title, getPrice());
     }
 }
