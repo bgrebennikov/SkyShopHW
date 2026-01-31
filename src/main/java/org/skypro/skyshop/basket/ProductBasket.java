@@ -22,9 +22,9 @@ public class ProductBasket {
         System.out.println("В корзине недостаточно места для добавления нового продукта");
     }
 
-    public int getBasketAmountTotal() {
+    public double getBasketAmountTotal() {
 
-        int sum = 0;
+        double sum = 0;
         for (Product product : this.store) {
             if (product == null) continue;
             sum += product.getPrice();
@@ -35,9 +35,14 @@ public class ProductBasket {
 
     public void printBasketItems() {
         int itemsCount = 0;
+        int specialItemsCount = 0;
+
         for (Product product : this.store) {
             if (product == null) continue;
             itemsCount++;
+            if (product.isSpecial()) {
+                specialItemsCount++;
+            }
             System.out.print(product);
         }
         if (itemsCount < 1) {
@@ -45,6 +50,7 @@ public class ProductBasket {
             return;
         }
         System.out.printf("Итого: %s%n", getBasketAmountTotal());
+        System.out.printf("Специальных товаров: %d%n", specialItemsCount);
     }
 
     public boolean isProductExist(String title) {
