@@ -1,6 +1,9 @@
 package org.skypro.skyshop.blog;
 
-public class Article {
+import org.skypro.skyshop.common.ContentType;
+import org.skypro.skyshop.search.Searchable;
+
+public class Article implements Searchable {
 
     private final String title;
     private final String body;
@@ -21,5 +24,15 @@ public class Article {
     @Override
     public String toString() {
         return "%s%n%s%n".formatted(title, body);
+    }
+
+    @Override
+    public String getSearchTerm() {
+        return this.toString();
+    }
+
+    @Override
+    public String getContentType() {
+        return ContentType.ARTICLE.name();
     }
 }
