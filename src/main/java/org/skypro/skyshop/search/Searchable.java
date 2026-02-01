@@ -8,7 +8,7 @@ public interface Searchable {
 
 
     default String getStringRepresentation() {
-        return "Имя Searchable объекта: %s\nТип: %s".formatted(getSearchTerm(), getContentType());
+        return "Имя Searchable объекта: %s%nТип: %s".formatted(getSearchTerm(), getContentType());
     }
 
 }
