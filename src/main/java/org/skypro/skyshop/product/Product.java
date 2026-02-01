@@ -7,6 +7,11 @@ public abstract class Product implements Searchable {
     private final String title;
 
     public Product(String title) {
+
+        if (title == null || title.isBlank()) {
+            throw new IllegalArgumentException("title cannot be null or blank");
+        }
+
         this.title = title;
     }
 
