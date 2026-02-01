@@ -24,6 +24,45 @@ public class SearchEngine {
         }
     }
 
+    private int countOccurrences(String text, String search) {
+        int count = 0;
+        int index = 0;
+
+        int foundIndex = text.indexOf(search, index);
+        while (foundIndex != -1) {
+            count++;
+            index = foundIndex + search.length();
+            foundIndex = text.indexOf(search, index);
+        }
+
+        return count;
+    }
+
+    public Searchable findBestResult(String search) {
+        if (search == null || search.isEmpty()) {
+            throw new IllegalArgumentException("search cannot be null or empty");
+        }
+
+        Searchable bestMatch = null;
+        int maxCount = 0;
+
+        for (Searchable item : searchItems) {
+            String term = item.getSearchTerm();
+            if (term == null) {
+                continue;
+            }
+
+            int count = countOccurrences(term, search);
+            if (count > maxCount) {
+                maxCount = count;
+                bestMatch = item;
+            }
+
+        }
+        return bestMatch;
+
+    }
+
 
     public Searchable[] search(String query) {
         int limit = 5;
