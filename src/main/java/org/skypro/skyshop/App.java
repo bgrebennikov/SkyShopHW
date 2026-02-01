@@ -1,49 +1,53 @@
 package org.skypro.skyshop;
 
-import org.skypro.skyshop.basket.ProductBasket;
+import org.skypro.skyshop.blog.Article;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixedPriceProduct;
 import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
+import org.skypro.skyshop.search.SearchEngine;
+import org.skypro.skyshop.search.Searchable;
+
+import java.util.Arrays;
 
 public class App {
 
     public static void main(String[] args) {
-        Product cheese = new SimpleProduct("Cheese", 200);
-        Product milk = new DiscountedProduct("Milk", 122, 20);
-        Product olives = new SimpleProduct("Olives", 165);
+
+
+        Product banana = new SimpleProduct("Banana", 150);
         Product coconut = new FixedPriceProduct("Coconut");
+        Product iphone = new DiscountedProduct("Iphone 15", 78000, 15);
 
-        ProductBasket basket = new ProductBasket();
-        basket.addProduct(cheese);
-        System.out.println("=== Добавили 1 продукт в корзину ===\n");
-        basket.printBasketItems();
+        Article article = new Article("banana and coconut smoothie recipe", "Here are a few ways to make a ...");
+        Article article2 = new Article("Iphone 15 Review", "featuring a 48MP main camera, USB-C connectivity, and the Dynamic Island...");
 
-        System.out.println("=== Очищаем корзину и запрашиваем список товаров ===\n");
-        basket.cleanBasket();
-        basket.printBasketItems();
+        SearchEngine searchEngine = new SearchEngine(5);
 
-        System.out.println("=== Выводим стоимость пустой корзины ===\n");
-        System.out.println(basket.getBasketAmountTotal());
+        searchEngine.add(banana);
+        searchEngine.add(coconut);
+        searchEngine.add(iphone);
 
-        System.out.println("=== Пробуем добавить более 5 продуктов ===\n");
+        searchEngine.add(article);
+        searchEngine.add(article2);
 
-        basket.addProduct(milk);
-        basket.addProduct(olives);
-        basket.addProduct(coconut);
-        basket.addProduct(milk);
-        basket.addProduct(olives);
-        basket.addProduct(coconut);
+        Searchable[] searchResult = searchEngine.search("Iphone 15");
+        Searchable[] searchResult2 = searchEngine.search("banana and coconut smoothie recipe");
+        Searchable[] searchResult3 = searchEngine.search("qwerty");
 
-        basket.printBasketItems();
 
-        System.out.println("=== Проверяем наличие товаров в корзине ===\n");
-        System.out.printf("Olives: %s%n", basket.isProductExist("Olives"));
-        System.out.printf("Sparkling water: %s%n", basket.isProductExist("Sparkling water"));
+        System.out.println(Arrays.toString(searchResult));
+        System.out.println(Arrays.toString(searchResult2));
+        System.out.println(Arrays.toString(searchResult3));
 
-        System.out.println("=== Получаем товар из корзины по названию ===\n");
-        System.out.printf("Olives: %s%n", basket.findProductByTitle("Olives"));
-        System.out.printf("Chewing gum: %s%n", basket.findProductByTitle("Chewing gum"));
+
+        Arrays.stream(searchResult).map(Searchable::getStringRepresentation).forEach(System.out::println);
+        Arrays.stream(searchResult2).map(Searchable::getStringRepresentation).forEach(System.out::println);
+        Arrays.stream(searchResult3).map(Searchable::getStringRepresentation).forEach(System.out::println);
+
+
+
+
 
 
     }
