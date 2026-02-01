@@ -1,5 +1,7 @@
 package org.skypro.skyshop.search;
 
+import org.skypro.skyshop.exceptions.BestResultNotFound;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +40,7 @@ public class SearchEngine {
         return count;
     }
 
-    public Searchable findBestResult(String search) {
+    public Searchable findBestResult(String search) throws BestResultNotFound {
         if (search == null || search.isEmpty()) {
             throw new IllegalArgumentException("search cannot be null or empty");
         }
@@ -59,8 +61,12 @@ public class SearchEngine {
             }
 
         }
-        return bestMatch;
 
+        if (bestMatch == null) {
+            throw new BestResultNotFound(search);
+        }
+
+        return bestMatch;
     }
 
 
