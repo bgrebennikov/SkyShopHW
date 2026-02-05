@@ -1,51 +1,65 @@
 package org.skypro.skyshop;
 
-import org.skypro.skyshop.basket.ProductBasket;
+import org.skypro.skyshop.blog.Article;
+import org.skypro.skyshop.exceptions.BestResultNotFound;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixedPriceProduct;
-import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
+import org.skypro.skyshop.search.SearchEngine;
+import org.skypro.skyshop.search.Searchable;
 
 public class App {
 
     public static void main(String[] args) {
-        Product cheese = new SimpleProduct("Cheese", 200);
-        Product milk = new DiscountedProduct("Milk", 122, 20);
-        Product olives = new SimpleProduct("Olives", 165);
-        Product coconut = new FixedPriceProduct("Coconut");
 
-        ProductBasket basket = new ProductBasket();
-        basket.addProduct(cheese);
-        System.out.println("=== Добавили 1 продукт в корзину ===\n");
-        basket.printBasketItems();
+        SearchEngine searchEngine = buildSearchEngine();
 
-        System.out.println("=== Очищаем корзину и запрашиваем список товаров ===\n");
-        basket.cleanBasket();
-        basket.printBasketItems();
+        try {
+            Searchable result = searchEngine.findBestResult("Banana");
+            System.out.printf("Best result found for \"Banana\": %s%n", result);
+        } catch (BestResultNotFound e) {
+            System.out.printf("Error for \"Banana\": %s%n", e.getMessage());
+        }
 
-        System.out.println("=== Выводим стоимость пустой корзины ===\n");
-        System.out.println(basket.getBasketAmountTotal());
+        try {
+            Searchable result2 = searchEngine.findBestResult("Dynamic Island");
+            System.out.printf("Best result found for \"Dynamic Island\": %s%n", result2);
+        } catch (BestResultNotFound e) {
+            System.out.printf("Error for \"Dynamic Island\": %s%n", e.getMessage());
+        }
 
-        System.out.println("=== Пробуем добавить более 5 продуктов ===\n");
+        try {
+            Searchable result3 = searchEngine.findBestResult("azaza");
+            System.out.printf("Best result found for \"azaza\": %s%n", result3);
+        } catch (BestResultNotFound e) {
+            System.out.printf("Error for \"azaza\": %s%n", e.getMessage());
+        }
 
-        basket.addProduct(milk);
-        basket.addProduct(olives);
-        basket.addProduct(coconut);
-        basket.addProduct(milk);
-        basket.addProduct(olives);
-        basket.addProduct(coconut);
-
-        basket.printBasketItems();
-
-        System.out.println("=== Проверяем наличие товаров в корзине ===\n");
-        System.out.printf("Olives: %s%n", basket.isProductExist("Olives"));
-        System.out.printf("Sparkling water: %s%n", basket.isProductExist("Sparkling water"));
-
-        System.out.println("=== Получаем товар из корзины по названию ===\n");
-        System.out.printf("Olives: %s%n", basket.findProductByTitle("Olives"));
-        System.out.printf("Chewing gum: %s%n", basket.findProductByTitle("Chewing gum"));
-
-
+        try {
+            Searchable result4 = searchEngine.findBestResult("");
+            System.out.printf("Best result found for empty string: %s%n", result4);
+        } catch (IllegalArgumentException e) {
+            System.out.printf("Input Error for empty string: %s%n", e.getMessage());
+        } catch (BestResultNotFound e) {
+            System.out.printf("Error for empty string: %s%n", e.getMessage());
+        }
     }
 
+    private static SearchEngine buildSearchEngine() {
+        SimpleProduct banana = new SimpleProduct("Banana", 150);
+        FixedPriceProduct coconut = new FixedPriceProduct("Coconut");
+        DiscountedProduct iphone = new DiscountedProduct("Iphone 15", 78000, 15);
+
+        Article article = new Article("banana and coconut smoothie recipe", "Here are a few ways to make a ...");
+        Article article2 = new Article("Iphone 15 Review", "featuring a 48MP main camera, USB-C connectivity, and the Dynamic Island...");
+
+        SearchEngine searchEngine = new SearchEngine(5);
+
+        searchEngine.add(banana);
+        searchEngine.add(coconut);
+        searchEngine.add(iphone);
+        searchEngine.add(article);
+        searchEngine.add(article2);
+        return searchEngine;
+    }
 }
