@@ -2,31 +2,25 @@ package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProductBasket {
-    private final Product[] store;
+    private final List<Product> store;
 
     public ProductBasket() {
-        this.store = new Product[5];
+        this.store = new ArrayList<>();
     }
 
     public void addProduct(Product product) {
         if (product == null) return;
-
-        for (int i = 0; i < this.store.length; i++) {
-            if (this.store[i] == null) {
-                this.store[i] = product;
-                return;
-            }
-        }
-
-        System.out.println("В корзине недостаточно места для добавления нового продукта");
+        store.add(product);
     }
 
     public double getBasketAmountTotal() {
 
         double sum = 0;
-        for (Product product : this.store) {
-            if (product == null) continue;
+        for (Product product : store) {
             sum += product.getPrice();
         }
 
@@ -38,7 +32,6 @@ public class ProductBasket {
         int specialItemsCount = 0;
 
         for (Product product : this.store) {
-            if (product == null) continue;
             itemsCount++;
             if (product.isSpecial()) {
                 specialItemsCount++;
@@ -54,7 +47,9 @@ public class ProductBasket {
     }
 
     public boolean isProductExist(String title) {
-        for (Product product : this.store) {
+        if (title == null) return false;
+
+        for (Product product : store) {
             if (product == null) continue;
             if (product.getTitle().equals(title)) {
                 return true;
@@ -65,8 +60,8 @@ public class ProductBasket {
 
     public Product findProductByTitle(String title) {
         if (title == null) return null;
-        for (Product product : this.store) {
-            if (product == null) continue;
+
+        for (Product product : store) {
             if (product.getTitle().equals(title)) {
                 return product;
             }
@@ -75,9 +70,7 @@ public class ProductBasket {
     }
 
     public void cleanBasket() {
-        for (int i = 0; i < this.store.length; i++) {
-            store[i] = null;
-        }
+        store.clear();
     }
 
 }
