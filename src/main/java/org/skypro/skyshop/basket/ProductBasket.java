@@ -4,13 +4,14 @@ import org.skypro.skyshop.product.Product;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ProductBasket {
-    private final List<Product> store;
+    private final LinkedList<Product> store;
 
     public ProductBasket() {
-        this.store = new ArrayList<>();
+        this.store = new LinkedList<>();
     }
 
     public void addProduct(Product product) {
@@ -71,7 +72,7 @@ public class ProductBasket {
     }
 
     public List<Product> removeByName(String productName) {
-        List<Product> removedItems = new ArrayList<>();
+        List<Product> removedItems = new LinkedList<>();
         if (productName == null) return removedItems;
 
         Iterator<Product> iterator = store.iterator();
