@@ -1,12 +1,16 @@
 package org.skypro.skyshop;
 
+import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.blog.Article;
 import org.skypro.skyshop.exceptions.BestResultNotFound;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixedPriceProduct;
+import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
 import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
+
+import java.util.List;
 
 public class App {
 
@@ -43,6 +47,15 @@ public class App {
         } catch (BestResultNotFound e) {
             System.out.printf("Error for empty string: %s%n", e.getMessage());
         }
+
+        System.out.println("\n=== Search (List results) ===");
+        List<Searchable> searchResults = searchEngine.search("banana");
+        for (Searchable item : searchResults) {
+            System.out.println(item);
+        }
+
+        System.out.println("\n=== Basket removeProductsByName ===");
+        demoBasketRemoveByName();
     }
 
     private static SearchEngine buildSearchEngine() {
@@ -53,7 +66,7 @@ public class App {
         Article article = new Article("banana and coconut smoothie recipe", "Here are a few ways to make a ...");
         Article article2 = new Article("Iphone 15 Review", "featuring a 48MP main camera, USB-C connectivity, and the Dynamic Island...");
 
-        SearchEngine searchEngine = new SearchEngine(5);
+        SearchEngine searchEngine = new SearchEngine();
 
         searchEngine.add(banana);
         searchEngine.add(coconut);
@@ -61,5 +74,36 @@ public class App {
         searchEngine.add(article);
         searchEngine.add(article2);
         return searchEngine;
+    }
+
+    private static void demoBasketRemoveByName() {
+        ProductBasket basket = new ProductBasket();
+
+        Product banana1 = new SimpleProduct("Banana", 150);
+        Product banana2 = new DiscountedProduct("Banana", 150, 10);
+        Product coconut = new FixedPriceProduct("Coconut");
+
+        basket.addProduct(banana1);
+        basket.addProduct(coconut);
+        basket.addProduct(banana2);
+
+        List<Product> removed = basket.removeByName("Banana");
+
+        System.out.println("Removed products:");
+        for (Product p : removed) {
+            System.out.println(p);
+        }
+
+        System.out.println("Basket after removing existing product:");
+        basket.printBasketItems();
+
+        List<Product> removedNothing = basket.removeByName("Milk");
+
+        if (removedNothing.isEmpty()) {
+            System.out.println("List is empty");
+        }
+
+        System.out.println("Trying remove non existing product:");
+        basket.printBasketItems();
     }
 }
