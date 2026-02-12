@@ -13,7 +13,13 @@ public class ProductBasket {
 
     public void addProduct(Product product) {
         if (product == null) return;
-        store.put(product.getTitle(), Collections.singletonList(product));
+
+        store
+                .computeIfAbsent(
+                        product.getTitle(), key -> new ArrayList<>()
+                )
+                .add(product);
+
     }
 
     public double getBasketAmountTotal() {
@@ -64,23 +70,14 @@ public class ProductBasket {
         return false;
     }
 
-    public Product findProductByTitle(String title) {
+    public List<Product> findProductByTitle(String title) {
         if (title == null) return null;
 
-        for (List<Product> product : store.values()) {
-            for (Product productItem : product) {
-                if (productItem.getTitle().equals(title)) {
-                    return productItem;
-                }
-            }
-        }
-        return null;
+        return store.getOrDefault(title, Collections.emptyList());
     }
 
     public List<Product> removeByName(String productName) {
-
         if (productName.isBlank() || !store.containsKey(productName)) return new ArrayList<>();
-
         return store.remove(productName);
 
     }
