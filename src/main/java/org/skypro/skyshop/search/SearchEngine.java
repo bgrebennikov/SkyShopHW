@@ -3,15 +3,15 @@ package org.skypro.skyshop.search;
 import org.skypro.skyshop.exceptions.BestResultNotFound;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeMap;
 
 public class SearchEngine {
 
-    private final LinkedList<Searchable> searchItems;
+    private final List<Searchable> searchItems;
 
     public SearchEngine() {
-        this.searchItems = new LinkedList<>();
+        this.searchItems = new ArrayList<>();
     }
 
     public void add(Searchable searchItem) {
@@ -44,7 +44,8 @@ public class SearchEngine {
         int maxCount = 0;
 
         for (Searchable item : searchItems) {
-            if (item == null) continue; // на всякий
+            if (item == null) continue;
+
             String term = item.getSearchTerm();
             if (term == null) continue;
 
@@ -61,23 +62,22 @@ public class SearchEngine {
         return bestMatch;
     }
 
-
-    public List<Searchable> search(String query) {
+    public TreeMap<String, Searchable> search(String query) {
         if (query == null || query.isEmpty()) {
-            return List.of();
+            return new TreeMap<>();
         }
 
-        List<Searchable> result = new LinkedList<>();
+        TreeMap<String, Searchable> result = new TreeMap<>();
+
         for (Searchable item : searchItems) {
             if (item == null) continue;
 
             String term = item.getSearchTerm();
             if (term != null && term.contains(query)) {
-                result.add(item);
+                result.put(item.getSearchTerm(), item);
             }
         }
+
         return result;
     }
-
-
 }
