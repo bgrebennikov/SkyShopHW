@@ -4,6 +4,7 @@ import org.skypro.skyshop.exceptions.BestResultNotFound;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 public class SearchEngine {
@@ -62,12 +63,12 @@ public class SearchEngine {
         return bestMatch;
     }
 
-    public TreeMap<String, Searchable> search(String query) {
+    public Map<String, Searchable> search(String query) {
         if (query == null || query.isEmpty()) {
             return new TreeMap<>();
         }
 
-        TreeMap<String, Searchable> result = new TreeMap<>();
+        Map<String, Searchable> result = new TreeMap<>();
 
         for (Searchable item : searchItems) {
             if (item == null) continue;

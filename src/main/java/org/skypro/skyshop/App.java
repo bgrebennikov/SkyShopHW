@@ -2,7 +2,6 @@ package org.skypro.skyshop;
 
 import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.blog.Article;
-import org.skypro.skyshop.exceptions.BestResultNotFound;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixedPriceProduct;
 import org.skypro.skyshop.product.Product;
@@ -11,7 +10,7 @@ import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
 
 import java.util.List;
-import java.util.TreeMap;
+import java.util.Map;
 
 public class App {
 
@@ -19,7 +18,7 @@ public class App {
 
         SearchEngine searchEngine = buildSearchEngine();
 
-        TreeMap<String, Searchable> searchResults = searchEngine.search("B");
+        Map<String, Searchable> searchResults = searchEngine.search("B");
 
         for (Searchable item : searchResults.values()) {
             System.out.println(item);
