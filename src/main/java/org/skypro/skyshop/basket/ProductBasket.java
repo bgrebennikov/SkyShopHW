@@ -23,16 +23,10 @@ public class ProductBasket {
     }
 
     public double getBasketAmountTotal() {
-
-        double sum = 0;
-
-        for (List<Product> productValue : store.values()) {
-            for (Product product : productValue) {
-                sum += product.getPrice();
-            }
-        }
-
-        return sum;
+        return store.values().stream()
+                .flatMap(Collection::stream)
+                .mapToDouble(Product::getPrice)
+                .sum();
     }
 
     public void printBasketItems() {
