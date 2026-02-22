@@ -30,23 +30,25 @@ public class ProductBasket {
     }
 
     public void printBasketItems() {
-        List<Product> allProducts = store.values().stream()
-                .flatMap(Collection::stream)
-                .toList();
 
-        if (allProducts.isEmpty()) {
+        if (store.isEmpty()) {
             System.out.println("В корзине пусто.");
             return;
         }
 
-        allProducts.forEach(System.out::print);
-
-        long specialItemsCount = allProducts.stream()
-                .filter(Product::isSpecial)
-                .count();
+        store.values().stream()
+                .flatMap(Collection::stream)
+                .forEach(System.out::print);
 
         System.out.printf("Итого: %s%n", getBasketAmountTotal());
-        System.out.printf("Специальных товаров: %d%n", specialItemsCount);
+        System.out.printf("Специальных товаров: %d%n", getSpecialCount());
+    }
+
+    private long getSpecialCount() {
+        return store.values().stream()
+                .flatMap(Collection::stream)
+                .filter(Product::isSpecial)
+                .count();
     }
 
     public boolean isProductExist(String title) {
@@ -60,7 +62,6 @@ public class ProductBasket {
 
     public List<Product> findProductByTitle(String title) {
         if (title == null) return null;
-
         return store.getOrDefault(title, Collections.emptyList());
     }
 
