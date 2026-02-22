@@ -30,22 +30,21 @@ public class ProductBasket {
     }
 
     public void printBasketItems() {
-        int itemsCount = 0;
-        int specialItemsCount = 0;
+        List<Product> allProducts = store.values().stream()
+                .flatMap(Collection::stream)
+                .toList();
 
-        for (List<Product> product : store.values()) {
-            for (Product productItem : product) {
-                itemsCount++;
-                if (productItem.isSpecial()) {
-                    specialItemsCount++;
-                }
-                System.out.print(product);
-            }
-        }
-        if (itemsCount < 1) {
+        if (allProducts.isEmpty()) {
             System.out.println("В корзине пусто.");
             return;
         }
+
+        allProducts.forEach(System.out::print);
+
+        long specialItemsCount = allProducts.stream()
+                .filter(Product::isSpecial)
+                .count();
+
         System.out.printf("Итого: %s%n", getBasketAmountTotal());
         System.out.printf("Специальных товаров: %d%n", specialItemsCount);
     }
