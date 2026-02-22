@@ -60,22 +60,18 @@ public class SearchEngine {
         return bestMatch;
     }
 
-    public Map<String, Searchable> search(String query) {
-        if (query == null || query.isEmpty()) {
-            return new TreeMap<>();
-        }
+    public Set<Searchable> search(String query) {
+        Set<Searchable> result = new TreeSet<>(new SearchableComparator());
 
-        Map<String, Searchable> result = new TreeMap<>();
+        if (query == null || query.isEmpty()) {
+            return result;
+        }
 
         for (Searchable item : searchItems) {
-            if (item == null) continue;
-
-            String term = item.getSearchTerm();
-            if (term != null && term.contains(query)) {
-                result.put(item.getSearchTerm(), item);
+            if (item != null && item.getSearchTerm().contains(query)) {
+                result.add(item);
             }
         }
-
         return result;
     }
 }
