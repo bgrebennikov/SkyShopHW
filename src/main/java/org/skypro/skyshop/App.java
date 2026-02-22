@@ -1,16 +1,13 @@
 package org.skypro.skyshop;
 
-import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.blog.Article;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixedPriceProduct;
-import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
 import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public class App {
 
@@ -18,12 +15,18 @@ public class App {
 
         SearchEngine searchEngine = buildSearchEngine();
 
-        Map<String, Searchable> searchResults = searchEngine.search("B");
+        System.out.println("--- Search results for 'B' (from long to short) ---");
 
-        for (Searchable item : searchResults.values()) {
-            System.out.println(item);
+        Set<Searchable> searchResults = searchEngine.search("B");
+
+        if (searchResults.isEmpty()) {
+            System.out.println("Not found");
+        } else {
+            for (Searchable item : searchResults) {
+                System.out.println(item.getStringRepresentation());
+                System.out.println("---");
+            }
         }
-
     }
 
     private static SearchEngine buildSearchEngine() {
@@ -37,6 +40,9 @@ public class App {
         SearchEngine searchEngine = new SearchEngine();
 
         searchEngine.add(banana);
+        searchEngine.add(banana);
+        searchEngine.add(banana);
+
         searchEngine.add(coconut);
         searchEngine.add(iphone);
         searchEngine.add(article);
@@ -44,34 +50,4 @@ public class App {
         return searchEngine;
     }
 
-    private static void demoBasketRemoveByName() {
-        ProductBasket basket = new ProductBasket();
-
-        Product banana1 = new SimpleProduct("Banana", 150);
-        Product banana2 = new DiscountedProduct("Banana", 150, 10);
-        Product coconut = new FixedPriceProduct("Coconut");
-
-        basket.addProduct(banana1);
-        basket.addProduct(coconut);
-        basket.addProduct(banana2);
-
-        List<Product> removed = basket.removeByName("Banana");
-
-        System.out.println("Removed products:");
-        for (Product p : removed) {
-            System.out.println(p);
-        }
-
-        System.out.println("Basket after removing existing product:");
-        basket.printBasketItems();
-
-        List<Product> removedNothing = basket.removeByName("Milk");
-
-        if (removedNothing.isEmpty()) {
-            System.out.println("List is empty");
-        }
-
-        System.out.println("Trying remove non existing product:");
-        basket.printBasketItems();
-    }
 }
