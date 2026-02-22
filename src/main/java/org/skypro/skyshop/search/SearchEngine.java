@@ -2,29 +2,21 @@ package org.skypro.skyshop.search;
 
 import org.skypro.skyshop.exceptions.BestResultNotFound;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class SearchEngine {
 
-    private final Searchable[] searchItems;
+    private final Set<Searchable> searchItems;
 
-    public SearchEngine(int count) {
-        this.searchItems = new Searchable[count];
+    public SearchEngine() {
+        this.searchItems = new HashSet<>();
     }
 
     public void add(Searchable searchItem) {
         if (searchItem == null) {
             return;
         }
-
-        for (int i = 0; i < searchItems.length; i++) {
-            if (searchItems[i] == null) {
-                searchItems[i] = searchItem;
-                return;
-            }
-        }
-
+        searchItems.add(searchItem);
     }
 
     private int countOccurrences(String text, String search) {
@@ -50,52 +42,36 @@ public class SearchEngine {
         int maxCount = 0;
 
         for (Searchable item : searchItems) {
+            if (item == null) continue;
+
             String term = item.getSearchTerm();
-            if (term == null) {
-                continue;
-            }
+            if (term == null) continue;
 
             int count = countOccurrences(term, search);
             if (count > maxCount) {
                 maxCount = count;
                 bestMatch = item;
             }
-
         }
 
         if (bestMatch == null) {
             throw new BestResultNotFound(search);
         }
-
         return bestMatch;
     }
 
-
-    public Searchable[] search(String query) {
-        int limit = 5;
+    public Set<Searchable> search(String query) {
+        Set<Searchable> result = new TreeSet<>(new SearchableComparator());
 
         if (query == null || query.isEmpty()) {
-            return new Searchable[0];
+            return result;
         }
-
-        List<Searchable> result = new ArrayList<>();
 
         for (Searchable item : searchItems) {
-            if (item == null) {
-                continue;
-            }
-
-            if (item.getSearchTerm().contains(query)) {
+            if (item != null && item.getSearchTerm().contains(query)) {
                 result.add(item);
-
-                if (result.size() == limit) {
-                    break;
-                }
             }
         }
-
-        return result.toArray(new Searchable[0]);
+        return result;
     }
-
-
 }
