@@ -53,15 +53,10 @@ public class ProductBasket {
     public boolean isProductExist(String title) {
         if (title == null) return false;
 
-        for (List<Product> product : store.values()) {
-            for (Product productItem : product) {
-                if (productItem == null) continue;
-                if (productItem.getTitle().equals(title)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return store.values().stream()
+                .flatMap(Collection::stream)
+                .anyMatch(product -> product.getTitle().equals(title));
+
     }
 
     public List<Product> findProductByTitle(String title) {
